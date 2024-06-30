@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+>
+
+<h:head>
+    <title>crude</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'/>
+
+    <style>
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #245757;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+
+
+        .login {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            margin-left: 250px;
+        }
+
+        .login h2.active {
+            color: #333;
+        }
+
+        .login span, .login p {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .text {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .signin {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .message{
+            margin-left: 250px;
+        }
+
+        .signin:hover {
+            opacity: 0.8;
+        }
+
+        .p-datatable .p-datatable-thead > tr > th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .p-button {
+            margin-right: .5em;
+        }
+
+        .p-dialog .p-dialog-content {
+            padding: 1em;
+        }
+        .table{
+            margin-left: 250px;
+        }
+
+
+
+        .nav-bar {
+            background-color: #efefef;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2; /* Ensure nav bar is above other content */
+        }
+
+        .nav-bar a {
+            float: left;
+            display: block;
+            color: #000000;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .nav-bar a:hover {
+            background-color: #ddd;
+            color: black;
+            color: #000000;
+
+        }
+
+    </style>
+
+
+</h:head>
+<body>
+
+<h:form>
+    <div class="sidebar">
+        <a href="famille_equipement.xhtml">Famille équipement</a>
+        <a href="equipement.xhtml">équipement</a>
+        <a href="planification.xhtml">planification</a>
+        <a href="planificationDetails.xhtml">détails des planification</a>
+        <a href="exercice.xhtml">exercice</a>
+        <a href="filial.xhtml">filial</a>
+        <a href="unite.xhtml">unite</a>
+        <a href="user.xhtml">users</a>
+        <a href="stats.xhtml">statistique des équipement</a>
+        <p:commandButton action="#{LoginControleur.logout()}"
+                         value="Logout"
+                         styleClass="rounded-button ui-button-danger"
+                         style=" margin-top: 380px;width: 100%"
+        />
+
+
+    </div>
+</h:form>
+
+
+<p:growl id="growl" showDetail="true" />
+<p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+
+<div class="login">
+
+    <h:form>
+        <h1>Ajouter un agent</h1>
+
+        <div style="display: flex; justify-content: space-between; ">
+
+            <p:inputText  placeholder="nom" value="#{userContreleur.user.name}" title="nom"
+            required="true" requiredMessage="nom ne peut pas étre vide"/>
+
+            <br/>
+            <br/>
+            <p:inputText  placeholder="prenom" value="#{userContreleur.user.prenom}" title="prenom"
+            required="true" requiredMessage="prenom ne peut pas étre vide"/>
+            <br/>
+            <p:selectOneMenu required="true" requiredMessage="vous devez sélectionner une filiale"
+                             converter="omnifaces.SelectItemsConverter" value="#{userContreleur.user.filiale}" >
+                <f:selectItem itemLabel="Sélectionner une filiale" itemValue="#{null}" />
+                <f:selectItems value="#{userContreleur.allFiliales}" var="filiale" itemLabel="#{filiale.nom_filiale}" itemValue="#{filiale}" />
+            </p:selectOneMenu>
+            <br/>
+            <p:selectOneMenu required="true" requiredMessage="vous devez sélectionner une unité"
+                             converter="omnifaces.SelectItemsConverter" value="#{userContreleur.user.unite}" >
+                <f:selectItem itemLabel="Sélectionner une unité" itemValue="#{null}" />
+                <f:selectItems value="#{userContreleur.allUnites}" var="unite" itemLabel="#{unite.nom_unite}" itemValue="#{unite}" />
+            </p:selectOneMenu>
+        </div>
+
+
+        <br/>
+        <div style="display: flex; justify-content: space-between; ">
+
+            <div class="col-12 md:col-4" >
+                <p:selectOneMenu required="true" requiredMessage="vous devez sélectionner un type "
+                                 value="#{userContreleur.user.type}">
+                    <f:selectItem itemLabel="Selectionner un type" itemValue="#{null}" />
+                    <f:selectItem itemLabel="Admin" itemValue="admin"/>
+                    <f:selectItem itemLabel="Filial" itemValue="filial"/>
+                    <f:selectItem itemLabel="Unite" itemValue="unite"/>
+                </p:selectOneMenu>
+            </div>
+            <div style="margin-left: 100px">
+                <p:selectOneMenu required="true" requiredMessage="la statu du compte ne peut pas etre vide"
+                                 converter="omnifaces.SelectItemsConverter" value="#{userContreleur.user.acitve}">
+                    <f:selectItem itemLabel="le compte est active?" itemValue="#{null}" />
+                    <f:selectItem itemLabel="Oui" itemValue="true"/>
+                    <f:selectItem itemLabel="Non" itemValue="false"/>
+                </p:selectOneMenu>
+            </div>
+
+            <br/>
+            <p:inputText placeholder="Adress" value="#{userContreleur.user.adress}" title="adress"
+            />
+            <br/>
+            <br/>
+            <p:inputText placeholder="email" value="#{userContreleur.user.email}" title="email"
+            required="true" requiredMessage="email ne peut pas etre vide"/>
+        </div>
+        <br/>
+        <div style="display: inline-flex; justify-content: space-evenly; ">
+
+            <br/>
+            <p:inputText style="margin-left: 400px" placeholder="Username" value="#{userContreleur.user.username}" title="nomUser"
+                         required="true"
+                         requiredMessage="Username ne peut pas etre vide"/>
+            <br/>
+            <br/>
+            <p:inputText style="margin-left: 200px" placeholder="Password" value="#{userContreleur.user.password}" title="password"
+                         required="true"
+                         requiredMessage="Mot de passe ne peut pas etre vide"/>
+        </div>
+
+        <br/>
+
+        <br/>
+
+        <p:commandButton styleClass="signin" update="growl" action="#{userContreleur.creat()}"  value="Ajouter"/>
+    </h:form>
+
+
+
+
+
+</div>
+
+</body>
+</html>

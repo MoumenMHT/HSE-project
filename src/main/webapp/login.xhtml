@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http//java.sun.com/jsp/jstl/core
+http//java.sun.com/jsp/jstl/core ">
+<h:head>
+    <title>Login page</title>
+
+</h:head>
+
+<h:body>
+    <style type="text/css">body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .login {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    .login h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .login span {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        display: block;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+
+    .text {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box; /* Makes sure padding does not affect overall width */
+    }
+
+    .signin {
+        width: 100%;
+        padding: 10px;
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .signin:hover {
+        background-color: #004494;
+    }
+
+    .login a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .login a:hover {
+        text-decoration: underline;
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid #eee;
+    }
+    </style>
+
+
+    <h:form>
+
+
+        <div class="login">
+            <p:growl id="growl" showDetail="true" />
+            <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+            <h2 class="active"> sign in </h2>
+
+
+            <p:outputLabel for="usernameyg">Username</p:outputLabel>
+            <p:inputText id="usernameyg" styleClass="text" value="#{LoginControleur.user1.username}" title="Username"
+                         required="true"
+                         requiredMessage="le nom d'utilisateur ne peut pas être vide"/>
+
+            <br/>
+
+            <br/>
+
+            <p:outputLabel for="passwgord">password</p:outputLabel>
+
+
+            <h:inputSecret id="passwgord" styleClass="text" value="#{LoginControleur.user1.password}" title="Password"
+                           required="true"
+                           requiredMessage="le mot de passe ne peut pas être vide"/>
+            <br/>
+
+
+            <p:commandButton update="growl" value="Login" styleClass="signin" action="#{LoginControleur.Login}"/>
+
+
+
+
+
+            <hr/>
+
+
+
+        </div>
+
+
+    </h:form>
+
+
+</h:body>
+</html>
+

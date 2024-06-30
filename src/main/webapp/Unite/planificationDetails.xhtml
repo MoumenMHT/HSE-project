@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+>
+
+
+
+<h:head>
+    <title>JSF Template with Sidebar</title>
+    <style>
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #245757;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+
+
+        .login {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+
+        }
+
+        .login h2.active {
+            color: #333;
+        }
+
+        .login span, .login p {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .text {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .signin {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .message{
+            margin-left: 250px;
+        }
+
+        .signin:hover {
+            opacity: 0.8;
+        }
+
+        .p-datatable .p-datatable-thead > tr > th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .p-button {
+            margin-right: .5em;
+        }
+
+        .p-dialog .p-dialog-content {
+            padding: 1em;
+        }
+        .table{
+            margin-left: 250px;
+        }
+
+
+
+        .nav-bar {
+            background-color: #efefef;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2; /* Ensure nav bar is above other content */
+        }
+
+        .nav-bar a {
+            float: left;
+            display: block;
+            color: #000000;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .nav-bar a:hover {
+            background-color: #ddd;
+            color: black;
+            color: #000000;
+
+        }
+
+    </style>
+
+</h:head>
+
+<h:body>
+
+
+
+    <h:form>
+        <div class="sidebar">
+            <a href="planification.xhtml">planification</a>
+            <a href="planificationDetails.xhtml">détails des planification</a>
+            <a href="exercice.xhtml">exercice</a>
+            <a href="stats.xhtml">statistique</a>
+            <p:commandButton action="#{LoginControleur.logout()}"
+                             value="Logout"
+                             styleClass="rounded-button ui-button-danger"
+                             style=" margin-top: 590px;width: 100%"
+            />
+        </div>
+    </h:form>
+
+
+
+
+
+
+
+
+
+
+    <p:growl id="growl" showDetail="true" />
+    <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+    <div class="login">
+        <p:outputPanel id="data">
+            <div class="table">
+                <h:form>
+                    <p:dataTable id="exercice" var="planification" value="#{planificationControleur.planificationList}"
+                                 rowKey="#{planificationControleur.planification.id_planification}"
+                                 reflow="true" aginator="true" rows="10" rowSelectMode="add" paginator="true"  paginatorPosition="bottom"
+                                 selection="#{planificationControleur.planification}" >
+
+
+
+                        <p:column headerText="Titre" filterBy="#{planification.titre}" filterMatchMode="contains">
+                            <h:outputText value="#{planification.titre}"/>
+                        </p:column>
+                        <p:column headerText="Date debut">
+                            <h:outputText value="#{planification.dateDebut}"/>
+                        </p:column>
+                        <p:column headerText="Date fin">
+                            <h:outputText value="#{planification.dateFin}"/>
+                        </p:column>
+                        <p:column headerText="Famille equipement" filterBy="#{planification.equipement.famille_equipement.nom_famille}" filterMatchMode="contains">
+                            <h:outputText value="#{planification.equipement.famille_equipement.nom_famille}"/>
+                        </p:column>
+                        <p:column headerText="Equipement" filterBy="#{planification.equipement.nom_equipement}" filterMatchMode="contains">
+                            <h:outputText value="#{planification.equipement.nom_equipement}"/>
+                        </p:column>
+                        <p:column headerText="Filial" filterBy="#{planification.unite.filiale.nom_filiale}" filterMatchMode="contains">
+                            <h:outputText value="#{planification.unite.filiale.nom_filiale}"/>
+                        </p:column>
+                        <p:column headerText="Unite" filterBy="#{planification.unite.nom_unite}" filterMatchMode="contains">
+                            <h:outputText value="#{planification.unite.nom_unite}"/>
+                        </p:column>
+
+                        <p:column headerText="comands">
+                            <p:commandButton icon="pi pi-check" update="data growl"
+                                             oncomplete="PF('confirmDialog').show()"
+                                             action="#{planificationControleur.test}"
+                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <f:setPropertyActionListener value="#{planification}" target="#{planificationControleur.planification}"/>
+                            </p:commandButton>
+
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                             oncomplete="PF('deleteProductDialog').show()">
+                                <f:setPropertyActionListener value="#{planification}" target="#{planificationControleur.planification}"/>
+                            </p:commandButton>
+
+                        </p:column>
+                    </p:dataTable>
+                    <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                     message="Delete the product?" header="Confirm" severity="warn">
+                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{planificationControleur.deletePlanification()}"
+                                         process="@this" update="data growl" oncomplete="PF('deleteProductDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                         onclick="PF('deleteProductDialog').hide()"/>
+                    </p:confirmDialog>
+
+                    <p:confirmDialog widgetVar="confirmDialog" showEffect="fade" width="300"
+                                     message="l'équipement est controlé?" header="Confirm" severity="warn">
+                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{planificationControleur.equipmentControled()}"
+                                         process="@this" update="data growl" oncomplete="PF('confirmDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                         onclick="PF('confirmDialog').hide()"/>
+                    </p:confirmDialog>
+
+                </h:form>
+            </div>
+
+
+
+
+        </p:outputPanel>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</h:body>
+
+</html>

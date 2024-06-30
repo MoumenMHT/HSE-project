@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+>
+
+
+
+<h:head>
+    <title>JSF Template with Sidebar</title>
+    <style>
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #245757;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+
+
+        .login {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            margin-left: 250px;
+
+        }
+
+        .login h2.active {
+            color: #333;
+        }
+
+        .login span, .login p {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .text {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .signin {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .message{
+            margin-left: 250px;
+        }
+
+        .signin:hover {
+            opacity: 0.8;
+        }
+
+        .p-datatable .p-datatable-thead > tr > th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .p-button {
+            margin-right: .5em;
+        }
+
+        .p-dialog .p-dialog-content {
+            padding: 1em;
+        }
+        .table{
+            margin-left: 250px;
+        }
+
+
+
+        .nav-bar {
+            background-color: #efefef;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2; /* Ensure nav bar is above other content */
+        }
+
+        .nav-bar a {
+            float: left;
+            display: block;
+            color: #000000;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .nav-bar a:hover {
+            background-color: #ddd;
+            color: black;
+            color: #000000;
+
+        }
+        .user-menu{
+            margin-left: 93%;
+
+        }
+
+    </style>
+
+</h:head>
+
+<h:body>
+
+
+
+    <h:form>
+        <div class="sidebar">
+            <a href="planification.xhtml">planification</a>
+            <a href="planificationDetails.xhtml">détails des planification</a>
+            <a href="exercice.xhtml">exercice</a>
+            <a href="stats.xhtml">statistique</a>
+            <p:commandButton action="#{LoginControleur.logout()}"
+                             value="Logout"
+                             styleClass="rounded-button ui-button-danger"
+                             style=" margin-top: 590px;width: 100%"
+            />
+        </div>
+    </h:form>
+
+    <h:form>
+
+        <div class="login">
+            <h2 class="active"> Filter </h2>
+
+
+
+            <div class="grid ui-fluid">
+
+
+                <p:datePicker placeholder="jusqu'au"  styleClass="text"
+                              value="#{chartControleur.datefin}"
+                />
+                <p:selectOneMenu  converter="omnifaces.SelectItemsConverter" value="#{chartControleur.unite}" >
+                    <f:selectItem itemLabel="Sélectionner une unité" itemValue="#{null}" />
+                    <f:selectItems value="#{chartControleur.allUnites}" var="unite" itemLabel="#{unite.nom_unite}" itemValue="#{unite}" />
+                </p:selectOneMenu>
+
+
+
+
+            </div>
+            <br/>
+            <br/>
+
+            <p:commandButton value="ajouter" styleClass="signin"
+                             action="#{chartControleur.Update()}"
+                             update="data"/>
+
+        </div>
+    </h:form>
+
+
+
+
+
+
+
+    <div class="message">
+        <p:messages id="messages"  showDetail="true" closable="true">
+            <p:autoUpdate/>
+        </p:messages>
+    </div>
+    <p:outputPanel id="data">
+        <div class="login">
+
+            <div class="card">
+                <p:barChart model="#{chartControleur.hbarModel}" style="width: 100%; height: 500px;"/>
+
+            </div>
+            <h1 style="margin-left: 27%">percentage des équipements controlé </h1>
+            <div class="grid" style="width: 30%; margin-left: 30%">
+                <div class="card">
+                    <p:pieChart model="#{chartControleur.pieModel}" style="width: 100%; height: 500px;"/>
+                </div>
+            </div>
+        </div>
+    </p:outputPanel>
+
+
+</h:body>
+
+</html>
